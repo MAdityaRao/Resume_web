@@ -71,7 +71,7 @@ class VoiceAgent {
         }
     }
 
-    async connect() {
+  async connect() {
         if (this.isConnecting) return;
         
         try {
@@ -79,27 +79,40 @@ class VoiceAgent {
             this.updateStatus('Connecting...', 'connecting');
             this.micBtn.disabled = true;
 
-            // 1. Setup Audio Context & Visualizer (Local Mic)
+            // 1. Init Audio Context (if not already active)
+            if (!this.audioContext) {
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                this.analyser = this.audioContext.createAnalyser();
+                this.analyser.fftSize = 256;
+            }
+
+            // 2. Setup Local Mic (Your Voice)
             this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            this.setupAudioAnalysis(this.mediaStream);
+            const localSource = this.audioContext.createMediaStreamSource(this.mediaStream);
+            localSource.connect(this.analyser); // Connect Mic to Visualizer
+            
             this.startVisualizer();
 
-            // 2. Fetch Token
-            console.log("Fetching token...");
+            // 3. Fetch Token & Connect
             const response = await fetch(LiveKitConfig.TOKEN_URL);
             if (!response.ok) throw new Error(`Token fetch failed: ${response.statusText}`);
             const data = await response.json();
 
-            // 3. Connect to LiveKit
-            console.log("Connecting to LiveKit Room...");
             this.room = new LivekitClient.Room();
 
-            // Handle Agent's Audio (Remote Track)
+            // 4. Handle Agent's Audio (The Fix)
             this.room.on('trackSubscribed', (track) => {
                 if (track.kind === 'audio') {
-                    console.log('Agent audio track received');
+                    // Play the audio
                     const audioElement = track.attach();
                     document.body.appendChild(audioElement);
+
+                    // Connect Agent Audio to Visualizer
+                    if (track.mediaStream) {
+                        const remoteSource = this.audioContext.createMediaStreamSource(track.mediaStream);
+                        remoteSource.connect(this.analyser); // Agent voice now drives the waves too
+                        remoteSource.connect(this.audioContext.destination); // Ensure you can hear it
+                    }
                 }
             });
 
@@ -107,10 +120,8 @@ class VoiceAgent {
                 autoSubscribe: true,
             });
 
-            // Publish Local Mic to Room
             await this.room.localParticipant.setMicrophoneEnabled(true);
 
-            // Update State to Active
             this.isActive = true;
             this.updateStatus('Connected - Listening', 'active');
             this.toggleUIState(true);
@@ -119,7 +130,7 @@ class VoiceAgent {
             console.error('Connection failed:', error);
             this.updateStatus('Connection Failed', 'error');
             alert(`Could not connect: ${error.message}`);
-            this.stopLocalAudio(); // Cleanup if failed
+            this.disconnect(); 
         } finally {
             this.isConnecting = false;
             this.micBtn.disabled = false;
@@ -452,4 +463,3 @@ document.addEventListener('DOMContentLoaded', () => {
     
     console.log('Portfolio initialized.');
 });
-    <script src="https://cdn.jsdelivr.net/npm/livekit-client@2.7.2/dist/livekit-client.umd.min.js"></script>
