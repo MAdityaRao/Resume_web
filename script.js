@@ -463,3 +463,69 @@ document.addEventListener('DOMContentLoaded', () => {
     
     console.log('Portfolio initialized.');
 });
+// === Audio Visualizer (Mic-driven, interactive) ===
+const canvas = document.getElementById("audioVisualizer");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+let audioCtx, analyser, dataArray, source, animId;
+
+async function startVisualizer() {
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  source = audioCtx.createMediaStreamSource(stream);
+
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 256;
+  dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+  source.connect(analyser);
+  draw();
+}
+
+function stopVisualizer() {
+  cancelAnimationFrame(animId);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  audioCtx && audioCtx.close();
+}
+
+function draw() {
+  animId = requestAnimationFrame(draw);
+  analyser.getByteFrequencyData(dataArray);
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const bars = dataArray.length;
+  const barWidth = canvas.width / bars;
+
+  for (let i = 0; i < bars; i++) {
+    const value = dataArray[i];
+    const h = (value / 255) * canvas.height;
+    const x = i * barWidth;
+    const y = canvas.height - h;
+
+    ctx.fillStyle = `rgba(59,130,246,${0.3 + value / 512})`;
+    ctx.fillRect(x, y, barWidth - 1, h);
+  }
+}
+
+// === Hook to your mic button ===
+const micBtn = document.getElementById("agentMicBtn");
+let active = false;
+
+micBtn.addEventListener("click", async () => {
+  active = !active;
+  micBtn.classList.toggle("active", active);
+
+  if (active) {
+    await startVisualizer();
+  } else {
+    stopVisualizer();
+  }
+});
