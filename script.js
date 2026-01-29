@@ -10,7 +10,7 @@ const CONFIG = {
 
 // Replace with your actual Token Server URL
 const LiveKitConfig = {
-    TOKEN_URL: 'https://livekit-token-chi.vercel.app/api/token.js', // Ensure this endpoint returns { token: "..." }
+    TOKEN_URL: 'https://livekit-token-chi.vercel', // Ensure this endpoint returns { token: "..." }
     LIVEKIT_URL: "wss://aiagent-avy0myx4.livekit.cloud",
 };
 
