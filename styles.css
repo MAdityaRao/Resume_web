@@ -1009,3 +1009,93 @@ body {
     color: var(--color-text-muted);
     font-size: 0.9rem;
 }
+/* Transparency Box Styles */
+.agent-transparency-box {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: rgba(15, 23, 42, 0.6); /* Darker, subtle background */
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent); /* Accent line for visibility */
+    border-radius: var(--border-radius);
+    text-align: left;
+    width: 100%;
+}
+
+.transparency-title {
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+}
+
+.transparency-list {
+    list-style: none;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.transparency-list > li {
+    position: relative;
+    padding-left: 1rem;
+}
+
+.transparency-list > li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-weight: bold;
+}
+
+.transparency-sublist {
+    list-style: none;
+    margin-top: 0.25rem;
+    margin-left: 0.5rem;
+    color: var(--color-text-muted);
+}
+
+.transparency-sublist li {
+    position: relative;
+    padding-left: 1rem;
+}
+
+.transparency-sublist li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+}
+.agent-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-2xl); /* Increased gap for better separation */
+    align-items: start;      /* KEY FIX: Aligns content to top */
+}
+
+/* Adjust Transparency Box for Left Column */
+.agent-transparency-box {
+    margin-top: var(--spacing-lg);
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+}
+
+.transparency-list {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 968px) {
+    .agent-container {
+        grid-template-columns: 1fr; /* Stack vertically on mobile */
+        gap: var(--spacing-lg);
+    }
+}
