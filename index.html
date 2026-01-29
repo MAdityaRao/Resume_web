@@ -35,8 +35,10 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-label">Full Stack Developer & AI Engineer</div>
-                <h1 class="hero-title">Aditya Rao</h1>
-                <p class="hero-subtitle">Building enterprise-grade AI agents and scalable web applications with production-ready voice intelligence platforms</p>
+                <h1 class="hero-title">Aditya</h1>
+                <p class="hero-subtitle">
+    I design and deploy enterprise-grade AI agents and scalable web systems, with a focus on low-latency voice intelligence and real-world production constraints.
+                </p>
                 <div class="hero-location">Belman, Karnataka, India</div>
                 <div class="hero-actions">
                     <a href="#agent" class="btn btn-primary">
@@ -80,8 +82,15 @@
                 <h2 class="section-title">Professional Summary</h2>
             </div>
             <div class="about-content">
-                <p class="about-text">Results-oriented Full Stack Developer and B.Sc. Data Analytics student with production experience in Voice AI and Cloud Infrastructure. Currently building enterprise-grade AI agents using LiveKit and AWS.</p>
-                <p class="about-text">Proven track record of delivering client projects with complex payment and shipping integrations, deploying scalable web applications, and solving hyper-local problems using advanced machine learning techniques.</p>
+                <p class="about-text">
+            Results-oriented Full Stack Developer with hands-on production experience 
+            in Voice AI systems and cloud infrastructure.
+                </p>
+                <p class="about-text">Proven track record of delivering client
+                     projects with complex payment and shipping integrations,
+                      deploying scalable web applications, and solving hyper-local 
+                      problems using advanced machine learning techniques.
+                </p>
             </div>
         </div>
     </section>
@@ -152,7 +161,7 @@
                                 <h3 class="timeline-title">Torq Designs</h3>
                                 <p class="timeline-role">Part-Time Technical Solutions Partner</p>
                             </div>
-                            <span class="timeline-date">Nov 2025 - Present</span>
+                            <span class="timeline-date">Nov 2024 - Present</span>
                         </div>
                         <p class="timeline-description">Operating in a profit-sharing model (70% split) focused on technical solutions for SMB clients.</p>
                         <ul class="timeline-achievements">
@@ -189,7 +198,13 @@
                         <span class="project-badge">Featured</span>
                     </div>
                     <p class="project-subtitle">Enterprise Voice Intelligence Platform</p>
-                    <p class="project-description">Built a real-time AI Voice Agent capable of holding human-like conversations with less than 500ms latency. Engineered a secure token-generation backend server to authenticate users dynamically with real-time audio visualization and connection state management.</p>
+                    <p class="project-description">
+                    Built a real-time AI Voice Agent capable of holding human-like conversations 
+                    with sub-500ms latency. Designed a secure token-based backend for dynamic authentication, 
+                    real-time audio streaming, and connection lifecycle management. The system is 
+                    production-deployed and optimized for reliability and low latency.
+                    </p>
+
                     <div class="project-tech">
                         <span class="tech-tag">LiveKit Cloud</span>
                         <span class="tech-tag">Node.js</span>
@@ -296,15 +311,24 @@
                         Evaluation Logic
                     </h4>
                     <ul class="transparency-list">
-                        <li>This agent evaluates my profile using only:
-                            <ul class="transparency-sublist">
-                                <li>My resume & professional history</li>
-                                <li>My personal projects & GitHub</li>
-                            </ul>
-                        </li>
-                        <li>It strictly adheres to the provided Job Description.</li>
-                        <li>It will politely decline skills I do not possess (no hallucinations).</li>
-                    </ul>
+    <li>
+        This agent evaluates role fit using Retrieval-Augmented Generation (RAG) grounded strictly in:
+        <ul class="transparency-sublist">
+            <li>My resume and verified work experience</li>
+            <li>My personal projects and public GitHub repositories</li>
+        </ul>
+    </li>
+    <li>
+        The agent analyzes the provided Job Description and maps requirements explicitly to my actual skills and experience.
+    </li>
+    <li>
+        If a requirement does not match my background, the agent will clearly and politely state the mismatch rather than guessing or exaggerating.
+    </li>
+    <li>
+        This design is intentional and reflects my approach to building responsible, production-grade AI systems.
+    </li>
+</ul>
+
                 </div>
             </div>
 
@@ -314,7 +338,7 @@
                     <textarea 
                         id="jobDescription" 
                         class="agent-context-input" 
-                        placeholder="Paste a Job Description (JD) here... My gent will analyze how my profile matches your specific requirements."
+                        placeholder="Paste a Job Description (JD) here. The agent will evaluate how my actual experience aligns with your role requirements."
                     ></textarea>
                 </div>
 
@@ -337,7 +361,8 @@
                         <rect x="6" y="6" width="12" height="12" rx="2"></rect>
                     </svg>
                 </button>
-                <p class="agent-hint">Click the microphone to start the interview</p>
+                <p class="agent-hint">Click the microphone to simulate a JD-based technical screening</p>
+
             </div>
         </div>
     </div>
