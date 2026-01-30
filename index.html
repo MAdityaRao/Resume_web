@@ -272,109 +272,107 @@
             </div>
             
             <div class="agent-container">
-                <div class="agent-info">
-                    <h3 class="agent-info-title">Interactive Voice Assistant</h3>
-                    <p class="agent-info-text">
-                        Experience the voice intelligence I engineered firsthand. I built this agent from scratch to demonstrate low-latency, human-like interaction capabilities. It has full context about my projects, codebases, and technical skills.
-                    </p>
-                    
-                    <div class="agent-features">
-                        <div class="agent-feature">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                            </svg>
-                            <span>Real-time Response</span>
-                        </div>
-                        <div class="agent-feature">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                            </svg>
-                            <span>Context Aware</span>
-                        </div>
-                        <div class="agent-feature">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                            </svg>
-                            <span>Voice Enabled</span>
-                        </div>
-                    </div>
-
-                    <div class="agent-transparency-box">
-                        <h4 class="transparency-title">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="12" y1="16" x2="12" y2="12"></line>
-                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                            </svg>
-                            Evaluation Logic
-                        </h4>
-                        <ul class="transparency-list">
-                            <li>
-                                This agent evaluates role fit using Retrieval-Augmented Generation (RAG) grounded strictly in:
-                                <ul class="transparency-sublist">
-                                    <li>My resume and verified work experience</li>
-                                    <li>My personal projects and public GitHub repositories</li>
-                                </ul>
-                            </li>
-                            <li>
-                                The agent analyzes the provided Job Description and maps requirements explicitly to my actual skills and experience.
-                            </li>
-                            <li>
-                                If a requirement does not match my background, the agent will clearly and politely state the mismatch rather than guessing or exaggerating.
-                            </li>
-                            <li>
-                                This design is intentional and reflects my approach to building responsible, production-grade AI systems.
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="agent-context-wrapper" id="instructionsWrapper">
-        <div class="agent-context-input" style="display: flex; align-items: center; justify-content: center; text-align: center; background: rgba(78, 205, 196, 0.05); border-style: dashed;">
-            <p style="color: var(--color-text-secondary); font-size: 0.9rem;">
-                Click the microphone button below to connect to the AI Agent.<br>
-                You will be asked to provide the Job Description after joining.
-            </p>
-        </div>
-    </div>
-
-    <div class="agent-context-wrapper" id="jdWrapper" style="display: none; animation: fadeInUp 0.5s ease-out;">
-        <label for="jobDescription" class="agent-context-label">Recruiter Mode: Paste JD</label>
-        <textarea 
-            id="jobDescription" 
-            class="agent-context-input" 
-            placeholder="Paste the Job Description here..."
-        ></textarea>
-        <button class="btn btn-primary" id="submitJD" style="margin-top: var(--spacing-md); width: 100%; justify-content: center;">
-            Submit & Start Interview
-        </button>
-    </div>
-
-    <div class="agent-visualizer">
-        <canvas id="audioVisualizer"></canvas>
-        <div class="agent-status" id="agentStatus">
-            <span class="status-dot"></span>
-            <span class="status-text">Ready to Connect</span>
-        </div>
-    </div>
-
-    <button class="agent-mic-btn" id="agentMicBtn" aria-label="Start voice conversation">
-        <svg class="mic-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-            <line x1="12" y1="19" x2="12" y2="23"></line>
-            <line x1="8" y1="23" x2="16" y2="23"></line>
-        </svg>
-        <svg class="stop-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
-            <rect x="6" y="6" width="12" height="12" rx="2"></rect>
-        </svg>
-    </button>
-    <p class="agent-hint" id="agentHint">Click the microphone to join the meeting</p>
-
-                    
-                   
+    <div class="agent-info">
+        <h3 class="agent-info-title">Interactive Voice Assistant</h3>
+        <p class="agent-info-text">
+            Experience the voice intelligence I engineered firsthand. I built this agent from scratch to demonstrate low-latency, human-like interaction capabilities. It has full context about my projects, codebases, and technical skills.
+        </p>
+        
+        <div class="agent-features">
+            <div class="agent-feature">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+                <span>Real-time Response</span>
             </div>
+            <div class="agent-feature">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span>Context Aware</span>
+            </div>
+            <div class="agent-feature">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                </svg>
+                <span>Voice Enabled</span>
+            </div>
+        </div>
+
+        <div class="agent-transparency-box">
+            <h4 class="transparency-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                Evaluation Logic
+            </h4>
+            <ul class="transparency-list">
+                <li>
+                    <strong>Persona:</strong> I act as the candidate (Aditya), speaking in the first person ("I have...", "My experience..."). I am polite, professional, and confident.
+                </li>
+                <li>
+                    <strong>Strategy:</strong> I evaluate the Job Description against my actual resume:
+                    <ul class="transparency-sublist">
+                        <li><strong>Match Found:</strong> I enthusiastically confirm the skill with specific examples from my projects.</li>
+                        <li><strong>Skill Gap:</strong> I pivot to related strengths and my ability to learn quickly, rather than just saying "no".</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Style:</strong> Concise, smart, and natural spoken-style without exaggeration.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="agent-interface">
+        <div class="agent-context-wrapper" id="instructionsWrapper">
+            <div class="agent-context-input" style="display: flex; align-items: center; justify-content: center; text-align: center; background: rgba(78, 205, 196, 0.05); border-style: dashed;">
+                <p style="color: var(--color-text-secondary); font-size: 0.9rem;">
+                    Click the microphone button below to connect.<br>
+                    You will be asked to provide the Job Description after joining.
+                </p>
+            </div>
+        </div>
+
+        <div class="agent-context-wrapper" id="jdWrapper" style="display: none; animation: fadeInUp 0.5s ease-out;">
+            <label for="jobDescription" class="agent-context-label">Recruiter Mode: Paste JD</label>
+            <textarea 
+                id="jobDescription" 
+                class="agent-context-input" 
+                placeholder="Paste the Job Description here..."
+            ></textarea>
+            <button class="btn btn-primary" id="submitJD" style="margin-top: var(--spacing-md); width: 100%; justify-content: center;">
+                Submit & Start Interview
+            </button>
+        </div>
+
+        <div class="agent-visualizer">
+            <canvas id="audioVisualizer"></canvas>
+            <div class="agent-status" id="agentStatus">
+                <span class="status-dot"></span>
+                <span class="status-text">Ready to Connect</span>
+            </div>
+        </div>
+
+        <div class="agent-controls">
+            <button class="agent-mic-btn" id="agentMicBtn" aria-label="Start voice conversation">
+                <svg class="mic-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+                <svg class="stop-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                    <rect x="6" y="6" width="12" height="12" rx="2"></rect>
+                </svg>
+            </button>
+            <p class="agent-hint" id="agentHint">Click the microphone to join the meeting</p>
+        </div>
+    </div>
+</div>
         </div>
     </section>
 

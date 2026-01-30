@@ -898,6 +898,15 @@ body {
     gap: var(--spacing-md);
 }
 
+/* Add this to styles.css under the Agent Interface section */
+.agent-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: var(--spacing-sm);
+}
+
 .agent-context-wrapper {
     width: 100%;
 }
