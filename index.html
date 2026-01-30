@@ -3,25 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aditya Rao - Full Stack Developer & AI Engineer</title>
+    <title>Aditya - Full Stack Developer & AI Engineer</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<base target="_blank">
 </head>
 <body>
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+    
     <!-- Navigation -->
     <nav class="nav">
         <div class="nav-container">
             <div class="nav-logo">ADITYA</div>
-            <div class="nav-links">
+            <div class="nav-links" id="navLinks">
                 <a href="#about" class="nav-link">About</a>
                 <a href="#experience" class="nav-link">Experience</a>
                 <a href="#projects" class="nav-link">Projects</a>
                 <a href="#skills" class="nav-link">Skills</a>
                 <a href="#agent" class="nav-link nav-link-special">Talk to Agent</a>
             </div>
-            <button class="nav-toggle" aria-label="Toggle navigation">
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -31,13 +35,13 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-background"></div>
+        <div class="hero-background" id="heroBackground"></div>
         <div class="container">
             <div class="hero-content">
                 <div class="hero-label">Full Stack Developer & AI Engineer</div>
                 <h1 class="hero-title">Aditya</h1>
-                <p class="hero-subtitle">
-    I design and deploy enterprise-grade AI agents and scalable web systems, with a focus on low-latency voice intelligence and real-world production constraints.
+                <p class="hero-subtitle" id="heroSubtitle">
+                    I design and deploy enterprise-grade AI agents and scalable web systems, with a focus on low-latency voice intelligence and real-world production constraints.
                 </p>
                 <div class="hero-location">Belman, Karnataka, India</div>
                 <div class="hero-actions">
@@ -83,13 +87,10 @@
             </div>
             <div class="about-content">
                 <p class="about-text">
-            Results-oriented Full Stack Developer with hands-on production experience 
-            in Voice AI systems and cloud infrastructure.
+                    Results-oriented Full Stack Developer with hands-on production experience in Voice AI systems and cloud infrastructure.
                 </p>
-                <p class="about-text">Proven track record of delivering client
-                     projects with complex payment and shipping integrations,
-                      deploying scalable web applications, and solving hyper-local 
-                      problems using advanced machine learning techniques.
+                <p class="about-text">
+                    Proven track record of delivering client projects with complex payment and shipping integrations, deploying scalable web applications, and solving hyper-local problems using advanced machine learning techniques.
                 </p>
             </div>
         </div>
@@ -159,11 +160,13 @@
                         <div class="timeline-header">
                             <div>
                                 <h3 class="timeline-title">Torq Designs</h3>
-                                <p class="timeline-role">Part-Time Technical Solutions Partner</p>
+                                <p class="timeline-company">Part-Time Technical Solutions Partner</p>
                             </div>
-                            <span class="timeline-date">Nov 2024 - Present</span>
+                            <div class="timeline-period">Nov 2024 - Present</div>
                         </div>
-                        <p class="timeline-description">Operating in a profit-sharing model (70% split) focused on technical solutions for SMB clients.</p>
+                        <div class="timeline-description">
+                            Operating in a profit-sharing model (70% split) focused on technical solutions for SMB clients.
+                        </div>
                         <ul class="timeline-achievements">
                             <li>
                                 <strong>Payment & Logistics Infrastructure:</strong> Successfully integrated Razorpay payment gateways and Shiprocket logistics API for e-commerce clients, enabling automated order processing.
@@ -199,12 +202,8 @@
                     </div>
                     <p class="project-subtitle">Enterprise Voice Intelligence Platform</p>
                     <p class="project-description">
-                    Built a real-time AI Voice Agent capable of holding human-like conversations 
-                    with sub-500ms latency. Designed a secure token-based backend for dynamic authentication, 
-                    real-time audio streaming, and connection lifecycle management. The system is 
-                    production-deployed and optimized for reliability and low latency.
+                        Built a real-time AI Voice Agent capable of holding human-like conversations with sub-500ms latency. Designed a secure token-based backend for dynamic authentication, real-time audio streaming, and connection lifecycle management. The system is production-deployed and optimized for reliability and low latency.
                     </p>
-
                     <div class="project-tech">
                         <span class="tech-tag">LiveKit Cloud</span>
                         <span class="tech-tag">Node.js</span>
@@ -266,107 +265,118 @@
 
     <!-- AI Agent Section -->
     <section id="agent" class="section agent-section">
-    <div class="container">
-        <div class="section-header">
-            <span class="section-number">05</span>
-            <h2 class="section-title">Talk to My AI Agent</h2>
-        </div>
-        
-        <div class="agent-container">
-            <div class="agent-info">
-                <h3 class="agent-info-title">Interactive Voice Assistant</h3>
-                <p class="agent-info-text">
-                    Experience the voice intelligence I engineered firsthand. I built this agent from scratch to demonstrate low-latency, human-like interaction capabilities. It has full context about my projects, codebases, and technical skills.
-                </p>
-                
-                <div class="agent-features">
-                    <div class="agent-feature">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                        </svg>
-                        <span>Real-time Response</span>
-                    </div>
-                    <div class="agent-feature">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        <span>Context Aware</span>
-                    </div>
-                    <div class="agent-feature">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                        </svg>
-                        <span>Voice Enabled</span>
-                    </div>
-                </div>
-
-                <div class="agent-transparency-box">
-                    <h4 class="transparency-title">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" y1="16" x2="12" y2="12"></line>
-                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                        </svg>
-                        Evaluation Logic
-                    </h4>
-                    <ul class="transparency-list">
-    <li>
-        This agent evaluates role fit using Retrieval-Augmented Generation (RAG) grounded strictly in:
-        <ul class="transparency-sublist">
-            <li>My resume and verified work experience</li>
-            <li>My personal projects and public GitHub repositories</li>
-        </ul>
-    </li>
-    <li>
-        The agent analyzes the provided Job Description and maps requirements explicitly to my actual skills and experience.
-    </li>
-    <li>
-        If a requirement does not match my background, the agent will clearly and politely state the mismatch rather than guessing or exaggerating.
-    </li>
-    <li>
-        This design is intentional and reflects my approach to building responsible, production-grade AI systems.
-    </li>
-</ul>
-
-                </div>
+        <div class="container">
+            <div class="section-header">
+                <span class="section-number">05</span>
+                <h2 class="section-title">Talk to My AI Agent</h2>
             </div>
+            
+            <div class="agent-container">
+                <div class="agent-info">
+                    <h3 class="agent-info-title">Interactive Voice Assistant</h3>
+                    <p class="agent-info-text">
+                        Experience the voice intelligence I engineered firsthand. I built this agent from scratch to demonstrate low-latency, human-like interaction capabilities. It has full context about my projects, codebases, and technical skills.
+                    </p>
+                    
+                    <div class="agent-features">
+                        <div class="agent-feature">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                            </svg>
+                            <span>Real-time Response</span>
+                        </div>
+                        <div class="agent-feature">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            <span>Context Aware</span>
+                        </div>
+                        <div class="agent-feature">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                            </svg>
+                            <span>Voice Enabled</span>
+                        </div>
+                    </div>
 
-            <div class="agent-interface">
-                <div class="agent-context-wrapper">
-                    <label for="jobDescription" class="agent-context-label">Recruiter / Interviewer Mode</label>
-                    <textarea 
-                        id="jobDescription" 
-                        class="agent-context-input" 
-                        placeholder="Paste a Job Description (JD) here. The agent will evaluate how my actual experience aligns with your role requirements."
-                    ></textarea>
-                </div>
-
-                <div class="agent-visualizer">
-                    <canvas id="audioVisualizer"></canvas>
-                    <div class="agent-status" id="agentStatus">
-                        <span class="status-dot"></span>
-                        <span class="status-text">Ready to Connect</span>
+                    <div class="agent-transparency-box">
+                        <h4 class="transparency-title">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                            Evaluation Logic
+                        </h4>
+                        <ul class="transparency-list">
+                            <li>
+                                This agent evaluates role fit using Retrieval-Augmented Generation (RAG) grounded strictly in:
+                                <ul class="transparency-sublist">
+                                    <li>My resume and verified work experience</li>
+                                    <li>My personal projects and public GitHub repositories</li>
+                                </ul>
+                            </li>
+                            <li>
+                                The agent analyzes the provided Job Description and maps requirements explicitly to my actual skills and experience.
+                            </li>
+                            <li>
+                                If a requirement does not match my background, the agent will clearly and politely state the mismatch rather than guessing or exaggerating.
+                            </li>
+                            <li>
+                                This design is intentional and reflects my approach to building responsible, production-grade AI systems.
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
-                <button class="agent-mic-btn" id="agentMicBtn" aria-label="Start voice conversation">
-                    <svg class="mic-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                        <line x1="12" y1="19" x2="12" y2="23"></line>
-                        <line x1="8" y1="23" x2="16" y2="23"></line>
-                    </svg>
-                    <svg class="stop-icon" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
-                        <rect x="6" y="6" width="12" height="12" rx="2"></rect>
-                    </svg>
-                </button>
-                <p class="agent-hint">Click the microphone to simulate a JD-based technical screening</p>
-
-            </div>
+                <div class="agent-context-wrapper" id="instructionsWrapper">
+        <div class="agent-context-input" style="display: flex; align-items: center; justify-content: center; text-align: center; background: rgba(78, 205, 196, 0.05); border-style: dashed;">
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem;">
+                Click the microphone button below to connect to the AI Agent.<br>
+                You will be asked to provide the Job Description after joining.
+            </p>
         </div>
     </div>
-</section>
+
+    <div class="agent-context-wrapper" id="jdWrapper" style="display: none; animation: fadeInUp 0.5s ease-out;">
+        <label for="jobDescription" class="agent-context-label">Recruiter Mode: Paste JD</label>
+        <textarea 
+            id="jobDescription" 
+            class="agent-context-input" 
+            placeholder="Paste the Job Description here..."
+        ></textarea>
+        <button class="btn btn-primary" id="submitJD" style="margin-top: var(--spacing-md); width: 100%; justify-content: center;">
+            Submit & Start Interview
+        </button>
+    </div>
+
+    <div class="agent-visualizer">
+        <canvas id="audioVisualizer"></canvas>
+        <div class="agent-status" id="agentStatus">
+            <span class="status-dot"></span>
+            <span class="status-text">Ready to Connect</span>
+        </div>
+    </div>
+
+    <button class="agent-mic-btn" id="agentMicBtn" aria-label="Start voice conversation">
+        <svg class="mic-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" y1="19" x2="12" y2="23"></line>
+            <line x1="8" y1="23" x2="16" y2="23"></line>
+        </svg>
+        <svg class="stop-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+            <rect x="6" y="6" width="12" height="12" rx="2"></rect>
+        </svg>
+    </button>
+    <p class="agent-hint" id="agentHint">Click the microphone to join the meeting</p>
+
+                    
+                   
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer class="footer">
@@ -384,12 +394,12 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Aditya. Built with passion for technology and innovation.</p>
+                <p>Built with passion for technology and innovation.</p>
             </div>
         </div>
     </footer>
+    
     <script src="https://cdn.jsdelivr.net/npm/livekit-client@2.7.2/dist/livekit-client.umd.min.js"></script>
-
     <script src="script.js"></script>
 </body>
 </html>
