@@ -30,7 +30,6 @@ class VoiceAgent {
         // Audio & Visualizer Context
         this.audioContext = null;
         this.analyser = null;
-        this.mediaStream = null;
         this.animationId = null;
 
         // DOM Elements
@@ -103,41 +102,47 @@ class VoiceAgent {
                 this.analyser.fftSize = 256;
             }
 
-            // 2. Setup Local Mic
-            this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            const localSource = this.audioContext.createMediaStreamSource(this.mediaStream);
-            localSource.connect(this.analyser);
-            
-            this.startVisualizer();
-
-            // 3. Fetch Token
+            // 2. Fetch Token
             const response = await fetch(LiveKitConfig.TOKEN_URL);
             if (!response.ok) throw new Error(`Token fetch failed: ${response.statusText}`);
             const data = await response.json();
 
             this.room = new LivekitClient.Room();
 
-            // 4. Handle Agent's Audio
+            // 3. Handle Agent's Audio (remote tracks)
             this.room.on('trackSubscribed', (track) => {
                 if (track.kind === 'audio') {
                     const audioElement = track.attach();
-                    audioElement.style.display = 'none';
                     document.body.appendChild(audioElement);
 
+                    // Connect to analyzer for visualization
                     if (track.mediaStream) {
                         const remoteSource = this.audioContext.createMediaStreamSource(track.mediaStream);
                         remoteSource.connect(this.analyser);
-                        remoteSource.connect(this.audioContext.destination);
                     }
                 }
             });
 
-            // 5. Connect to LiveKit room
+            // 4. Connect to LiveKit room
             await this.room.connect(LiveKitConfig.LIVEKIT_URL, data.token, {
                 autoSubscribe: true,
             });
 
+            // 5. Enable microphone and get the track for visualization
             await this.room.localParticipant.setMicrophoneEnabled(true);
+            
+            // 6. Connect local mic to analyzer for visualization
+            const localAudioTrack = this.room.localParticipant.getTrackPublication(LivekitClient.Track.Source.Microphone);
+            if (localAudioTrack && localAudioTrack.track) {
+                const mediaStreamTrack = localAudioTrack.track.mediaStreamTrack;
+                if (mediaStreamTrack) {
+                    const stream = new MediaStream([mediaStreamTrack]);
+                    const localSource = this.audioContext.createMediaStreamSource(stream);
+                    localSource.connect(this.analyser);
+                }
+            }
+            
+            this.startVisualizer();
 
             // NEW: UI Logic - Show JD Input AFTER connection
             this.isConnected = true;
@@ -258,13 +263,11 @@ class VoiceAgent {
     // ... (rest of the methods like stopLocalAudio, toggleUIState, updateStatus, drawIdleVisualization, startVisualizer remain exactly the same)
     
     stopLocalAudio() {
-        if (this.mediaStream) {
-            this.mediaStream.getTracks().forEach(track => track.stop());
-            this.mediaStream = null;
-        }
-        if (this.audioContext) {
+        // LiveKit manages the microphone stream, so we don't need to stop it manually
+        if (this.audioContext && this.audioContext.state !== 'closed') {
             this.audioContext.close();
             this.audioContext = null;
+            this.analyser = null;
         }
         if (this.animationId) {
             cancelAnimationFrame(this.animationId);
