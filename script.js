@@ -10,10 +10,8 @@ const CONFIG = {
 };
 
 // LiveKit Configuration
-// In frontend/script.js
-
 const LiveKitConfig = {
-    TOKEN_URL: 'https://resume-token.vercel.app/api/token', // Must end in /api/token
+    TOKEN_URL: 'https://resume-token.vercel.app/api/token',
     LIVEKIT_URL: "wss://resumeai-ap63rl0b.livekit.cloud",
 };
 
@@ -185,7 +183,7 @@ class VoiceAgent {
 
         try {
             this.submitJDBtn.disabled = true;
-            this.submitJDBtn.textContent = 'Starting Interview...';
+            this.submitJDBtn.innerHTML = '<span class="btn-glow"></span><span class="btn-content">Starting Interview...</span>';
 
             // Send JD as data message to the agent
             if (this.room && this.room.localParticipant) {
@@ -205,8 +203,8 @@ class VoiceAgent {
             // UX Update
             if (this.jdWrapper) {
                 this.jdWrapper.innerHTML = `
-                    <div class="agent-context-input" style="background: rgba(34, 197, 94, 0.1); border-color: var(--color-success); text-align: center; padding: 1rem;">
-                        <p style="color: var(--color-success); font-weight: 600;">Job Description Submitted</p>
+                    <div class="agent-context-input" style="background: rgba(0, 255, 159, 0.1); border-color: var(--color-primary); text-align: center; padding: 1rem;">
+                        <p style="color: var(--color-primary); font-weight: 600;">Job Description Submitted</p>
                         <p style="color: var(--color-text-secondary); font-size: 0.85rem;">The agent is analyzing the JD. Please speak now.</p>
                     </div>
                 `;
@@ -229,125 +227,137 @@ class VoiceAgent {
         this.stopLocalAudio();
         this.isActive = false;
         this.isConnected = false;
-        this.toggleUIState(false);
-        this.resetUI(); // Call reset UI
-        this.updateStatus('Ready to Connect', 'ready');
-        this.drawIdleVisualization();
+        this.resetState();
     }
 
-    resetState() {
-        this.isConnecting = false;
-        this.isConnected = false;
-        this.micBtn.disabled = false;
-    }
-
-    // NEW METHOD: Reset UI to initial state
-    resetUI() {
-        if (this.instructionsWrapper) this.instructionsWrapper.style.display = 'block';
-        if (this.jdWrapper) {
-            this.jdWrapper.style.display = 'none';
-            // Restore original HTML for next session
-            this.jdWrapper.innerHTML = `
-                <label for="jobDescription" class="agent-context-label">Recruiter Mode: Paste JD</label>
-                <textarea id="jobDescription" class="agent-context-input" placeholder="Paste the Job Description here..."></textarea>
-                <button class="btn btn-primary" id="submitJD" style="margin-top: var(--spacing-md); width: 100%;">Submit & Start Interview</button>
-            `;
-            // Re-bind listener because we replaced innerHTML
-            this.jobDescriptionInput = document.getElementById('jobDescription');
-            this.submitJDBtn = document.getElementById('submitJD');
-            if (this.submitJDBtn) this.submitJDBtn.addEventListener('click', () => this.submitJD());
-        }
-        if (this.agentHint) this.agentHint.textContent = 'Click the microphone to join the meeting';
-    }
-
-    // ... (rest of the methods like stopLocalAudio, toggleUIState, updateStatus, drawIdleVisualization, startVisualizer remain exactly the same)
-    
     stopLocalAudio() {
-        // LiveKit manages the microphone stream, so we don't need to stop it manually
-        if (this.audioContext && this.audioContext.state !== 'closed') {
-            this.audioContext.close();
-            this.audioContext = null;
-            this.analyser = null;
-        }
         if (this.animationId) {
             cancelAnimationFrame(this.animationId);
             this.animationId = null;
         }
+        this.drawIdleVisualization();
     }
 
-    toggleUIState(isActive) {
-        if (isActive) {
-            this.micBtn.classList.add('active');
-            this.micIcon.style.display = 'none';
-            this.stopIcon.style.display = 'block';
-        } else {
-            this.micBtn.classList.remove('active');
-            this.micIcon.style.display = 'block';
-            this.stopIcon.style.display = 'none';
+    resetState() {
+        this.toggleUIState(false);
+        this.updateStatus('Ready to Connect', 'idle');
+        
+        // Reset UI
+        if (this.jdWrapper) this.jdWrapper.style.display = 'none';
+        if (this.instructionsWrapper) this.instructionsWrapper.style.display = 'block';
+        if (this.agentHint) this.agentHint.textContent = 'Click the microphone to join the meeting';
+    }
+
+    toggleUIState(active) {
+        if (this.micIcon) this.micIcon.style.display = active ? 'none' : 'block';
+        if (this.stopIcon) this.stopIcon.style.display = active ? 'block' : 'none';
+        if (this.micBtn) {
+            if (active) {
+                this.micBtn.classList.add('active');
+            } else {
+                this.micBtn.classList.remove('active');
+            }
         }
     }
 
     updateStatus(text, state) {
         if (this.statusText) this.statusText.textContent = text;
+        
         if (this.statusDot) {
             this.statusDot.className = 'status-dot';
-            if (state === 'active') this.statusDot.classList.add('active');
-            if (state === 'connecting') this.statusDot.classList.add('connecting');
-            if (state === 'error') this.statusDot.classList.add('error');
+            if (state === 'active') {
+                this.statusDot.style.background = '#00ff9f';
+                this.statusDot.style.boxShadow = '0 0 10px #00ff9f';
+            } else if (state === 'connecting') {
+                this.statusDot.style.background = '#ffaa00';
+                this.statusDot.style.boxShadow = '0 0 10px #ffaa00';
+            } else if (state === 'error') {
+                this.statusDot.style.background = '#ff6b6b';
+                this.statusDot.style.boxShadow = '0 0 10px #ff6b6b';
+            } else {
+                this.statusDot.style.background = '#8b93b8';
+                this.statusDot.style.boxShadow = 'none';
+            }
         }
-    }
-
-    drawIdleVisualization() {
-        // ... (keep original code)
-        if (!this.ctx || !this.canvas) return;
-        const width = this.canvas.getBoundingClientRect().width;
-        const height = this.canvas.getBoundingClientRect().height;
-        this.ctx.clearRect(0, 0, width, height);
-        this.ctx.strokeStyle = 'rgba(78, 205, 196, 0.2)';
-        this.ctx.lineWidth = 2;
-        this.ctx.beginPath();
-        const time = Date.now() * 0.001;
-        for (let x = 0; x < width; x += 2) {
-            const y = height / 2 + Math.sin(x * 0.02 + time) * 10;
-            if (x === 0) this.ctx.moveTo(x, y);
-            else this.ctx.lineTo(x, y);
+        
+        if (this.agentHint) {
+            if (state === 'active') {
+                this.agentHint.textContent = 'Speak now - Agent is listening';
+            } else if (state === 'connecting') {
+                this.agentHint.textContent = 'Connecting to voice agent...';
+            }
         }
-        this.ctx.stroke();
-        if (!this.isActive) requestAnimationFrame(() => this.drawIdleVisualization());
     }
 
     startVisualizer() {
-       // ... (keep original code)
-       if (!this.analyser) return;
+        if (!this.analyser || !this.ctx) return;
+        
         const bufferLength = this.analyser.frequencyBinCount;
         const dataArray = new Uint8Array(bufferLength);
+        const rect = this.canvas.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+
         const draw = () => {
-            if (!this.isActive && !this.isConnected) return;
             this.animationId = requestAnimationFrame(draw);
-            this.analyser.getByteTimeDomainData(dataArray);
-            const width = this.canvas.getBoundingClientRect().width;
-            const height = this.canvas.getBoundingClientRect().height;
-            this.ctx.fillStyle = 'rgba(26, 35, 50, 0.2)';
-            this.ctx.fillRect(0, 0, width, height);
-            this.ctx.lineWidth = 2;
-            this.ctx.strokeStyle = '#4ecdc4';
-            this.ctx.shadowBlur = 8;
-            this.ctx.shadowColor = '#4ecdc4';
-            this.ctx.beginPath();
-            const sliceWidth = width / bufferLength;
+            
+            this.analyser.getByteFrequencyData(dataArray);
+            
+            this.ctx.clearRect(0, 0, width, height);
+            
+            const barWidth = width / bufferLength * 2.5;
             let x = 0;
+            
             for (let i = 0; i < bufferLength; i++) {
-                const v = dataArray[i] / 128.0;
-                const y = v * height / 2;
-                if (i === 0) this.ctx.moveTo(x, y);
-                else this.ctx.lineTo(x, y);
-                x += sliceWidth;
+                const barHeight = (dataArray[i] / 255) * height * 0.8;
+                
+                const gradient = this.ctx.createLinearGradient(0, height - barHeight, 0, height);
+                gradient.addColorStop(0, 'rgba(0, 255, 159, 0.8)');
+                gradient.addColorStop(0.5, 'rgba(0, 212, 255, 0.6)');
+                gradient.addColorStop(1, 'rgba(0, 255, 159, 0.3)');
+                
+                this.ctx.fillStyle = gradient;
+                this.ctx.fillRect(x, height - barHeight, barWidth - 1, barHeight);
+                
+                x += barWidth;
             }
-            this.ctx.lineTo(width, height / 2);
-            this.ctx.stroke();
-            this.ctx.shadowBlur = 0;
         };
+        
         draw();
+    }
+
+    drawIdleVisualization() {
+        if (!this.ctx) return;
+        
+        const rect = this.canvas.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        const barCount = 64;
+        const barWidth = width / barCount;
+        
+        const drawIdle = () => {
+            if (this.isActive) return;
+            
+            this.ctx.clearRect(0, 0, width, height);
+            
+            for (let i = 0; i < barCount; i++) {
+                const barHeight = Math.random() * height * 0.3;
+                const x = i * barWidth;
+                const y = height / 2 - barHeight / 2;
+                
+                const gradient = this.ctx.createLinearGradient(0, y, 0, y + barHeight);
+                gradient.addColorStop(0, 'rgba(0, 255, 159, 0.3)');
+                gradient.addColorStop(0.5, 'rgba(0, 212, 255, 0.2)');
+                gradient.addColorStop(1, 'rgba(0, 255, 159, 0.3)');
+                
+                this.ctx.fillStyle = gradient;
+                this.ctx.fillRect(x, y, barWidth - 2, barHeight);
+            }
+            
+            setTimeout(drawIdle, 100);
+        };
+        
+        drawIdle();
     }
 }
 
@@ -358,7 +368,6 @@ const nav = document.querySelector('.nav');
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
 
-// Scroll effect
 window.addEventListener('scroll', () => {
     if (window.scrollY > 50) {
         nav.classList.add('scrolled');
@@ -431,85 +440,45 @@ const sectionObserver = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-document.querySelectorAll('.section').forEach(section => {
-    section.style.opacity = '0';
-    section.style.transform = 'translateY(30px)';
-    section.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-    sectionObserver.observe(section);
+document.querySelectorAll('.skill-category, .timeline-item, .project-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    sectionObserver.observe(el);
 });
-
-// ===================================
-// TYPING EFFECT
-// ===================================
-function typeWriter(element, text, speed = 25) {
-    let i = 0;
-    element.textContent = '';
-    function type() {
-        if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    type();
-}
 
 // ===================================
 // PARTICLE SYSTEM
 // ===================================
 class ParticleSystem {
-    constructor() {
-        this.canvas = document.createElement('canvas');
-        this.ctx = this.canvas.getContext('2d');
-        this.canvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:0.6;';
+    constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.particles = [];
+        this.particleCount = 80;
+        this.connectionDistance = 120;
         
-        const heroBg = document.getElementById('heroBackground');
-        if (heroBg) {
-            heroBg.appendChild(this.canvas);
-            this.particles = [];
-            this.mouse = { x: null, y: null };
-            
-            this.resize();
-            this.init();
-            this.animate();
-            
-            window.addEventListener('resize', () => this.resize());
-            
-            // Mouse interaction
-            const hero = document.querySelector('.hero');
-            if (hero) {
-                hero.addEventListener('mousemove', (e) => {
-                    const rect = this.canvas.getBoundingClientRect();
-                    this.mouse.x = e.clientX - rect.left;
-                    this.mouse.y = e.clientY - rect.top;
-                });
-                
-                hero.addEventListener('mouseleave', () => {
-                    this.mouse.x = null;
-                    this.mouse.y = null;
-                });
-            }
-        }
+        this.resize();
+        this.init();
+        this.animate();
+        
+        window.addEventListener('resize', () => this.resize());
     }
     
     resize() {
-        const hero = document.querySelector('.hero');
-        if (hero) {
-            this.canvas.width = hero.offsetWidth;
-            this.canvas.height = hero.offsetHeight;
-        }
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
     }
     
     init() {
         this.particles = [];
-        const count = Math.min(CONFIG.PARTICLE_COUNT, Math.floor((this.canvas.width * this.canvas.height) / 15000));
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < this.particleCount; i++) {
             this.particles.push({
                 x: Math.random() * this.canvas.width,
                 y: Math.random() * this.canvas.height,
                 vx: (Math.random() - 0.5) * 0.5,
                 vy: (Math.random() - 0.5) * 0.5,
-                size: Math.random() * 2 + 1
+                radius: Math.random() * 2 + 1
             });
         }
     }
@@ -517,62 +486,87 @@ class ParticleSystem {
     animate() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
-        this.particles.forEach(p => {
-            p.x += p.vx;
-            p.y += p.vy;
-
-            // Mouse interaction
-            if (this.mouse.x != null) {
-                const dx = this.mouse.x - p.x;
-                const dy = this.mouse.y - p.y;
-                const distance = Math.sqrt(dx*dx + dy*dy);
-                const maxDist = CONFIG.CONNECTION_DISTANCE;
-                
-                if (distance < maxDist && distance > 0) {
-                    const force = (maxDist - distance) / maxDist;
-                    const directionX = dx / distance;
-                    const directionY = dy / distance;
-                    p.x -= directionX * force * 2;
-                    p.y -= directionY * force * 2;
-                }
-            }
-
-            // Bounce off edges
-            if (p.x < 0 || p.x > this.canvas.width) p.vx *= -1;
-            if (p.y < 0 || p.y > this.canvas.height) p.vy *= -1;
+        this.particles.forEach(particle => {
+            particle.x += particle.vx;
+            particle.y += particle.vy;
             
-            // Draw particle
+            if (particle.x < 0 || particle.x > this.canvas.width) particle.vx *= -1;
+            if (particle.y < 0 || particle.y > this.canvas.height) particle.vy *= -1;
+            
             this.ctx.beginPath();
-            this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            this.ctx.fillStyle = '#4ecdc4';
-            this.ctx.shadowBlur = 6;
-            this.ctx.shadowColor = '#4ecdc4';
+            this.ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+            this.ctx.fillStyle = 'rgba(0, 255, 159, 0.6)';
+            this.ctx.shadowBlur = 5;
+            this.ctx.shadowColor = 'rgba(0, 255, 159, 0.8)';
             this.ctx.fill();
             this.ctx.shadowBlur = 0;
         });
         
-        // Draw connections
-        this.particles.forEach((p1, i) => {
+        for (let i = 0; i < this.particles.length; i++) {
             for (let j = i + 1; j < this.particles.length; j++) {
-                const p2 = this.particles[j];
-                const dx = p1.x - p2.x;
-                const dy = p1.y - p2.y;
-                const dist = Math.sqrt(dx*dx + dy*dy);
+                const dx = this.particles[i].x - this.particles[j].x;
+                const dy = this.particles[i].y - this.particles[j].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
                 
-                if (dist < CONFIG.CONNECTION_DISTANCE) {
+                if (distance < this.connectionDistance) {
+                    const opacity = (1 - distance / this.connectionDistance) * 0.3;
                     this.ctx.beginPath();
-                    this.ctx.moveTo(p1.x, p1.y);
-                    this.ctx.lineTo(p2.x, p2.y);
-                    const opacity = 0.15 * (1 - dist/CONFIG.CONNECTION_DISTANCE);
-                    this.ctx.strokeStyle = `rgba(78, 205, 196, ${opacity})`;
+                    this.ctx.strokeStyle = `rgba(0, 255, 159, ${opacity})`;
                     this.ctx.lineWidth = 1;
+                    this.ctx.moveTo(this.particles[i].x, this.particles[i].y);
+                    this.ctx.lineTo(this.particles[j].x, this.particles[j].y);
                     this.ctx.stroke();
                 }
             }
-        });
+        }
         
         requestAnimationFrame(() => this.animate());
     }
+}
+
+// ===================================
+// TERMINAL TYPING EFFECT
+// ===================================
+function initTerminalTyping() {
+    const terminalText = document.getElementById('terminalText');
+    if (!terminalText) return;
+    
+    const texts = [
+        'I design and deploy enterprise-grade AI agents...',
+        'Building scalable web systems with low-latency...',
+        'Focus on production constraints and real-world solutions...',
+        'Voice intelligence and AI-powered applications...'
+    ];
+    let textIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    
+    function typeText() {
+        const currentText = texts[textIndex];
+        
+        if (!isDeleting) {
+            terminalText.textContent = currentText.substring(0, charIndex);
+            charIndex++;
+            
+            if (charIndex > currentText.length) {
+                isDeleting = true;
+                setTimeout(typeText, 2000);
+                return;
+            }
+        } else {
+            terminalText.textContent = currentText.substring(0, charIndex);
+            charIndex--;
+            
+            if (charIndex === 0) {
+                isDeleting = false;
+                textIndex = (textIndex + 1) % texts.length;
+            }
+        }
+        
+        setTimeout(typeText, isDeleting ? 30 : 50);
+    }
+    
+    typeText();
 }
 
 // ===================================
@@ -580,17 +574,41 @@ class ParticleSystem {
 // ===================================
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize Particle System
-    new ParticleSystem();
+    const particleCanvas = document.getElementById('particleCanvas');
+    if (particleCanvas) {
+        new ParticleSystem(particleCanvas);
+    }
 
     // 2. Initialize Voice Agent
     const voiceAgent = new VoiceAgent();
-
-    // 3. Typing Effect on Hero Subtitle
-    const subtitle = document.getElementById('heroSubtitle');
-    if (subtitle) {
-        const text = subtitle.textContent;
-        typeWriter(subtitle, text, 20);
+    
+    // 3. Terminal Typing Effect
+    initTerminalTyping();
+    
+    // 4. Interactive Effects
+    const heroImageFrame = document.querySelector('.hero-image-frame');
+    if (heroImageFrame) {
+        heroImageFrame.addEventListener('mouseenter', () => {
+            heroImageFrame.style.boxShadow = '0 0 60px rgba(0, 255, 159, 0.6), inset 0 0 60px rgba(0, 255, 159, 0.2)';
+        });
+        heroImageFrame.addEventListener('mouseleave', () => {
+            heroImageFrame.style.boxShadow = '0 0 40px rgba(0, 255, 159, 0.3), inset 0 0 40px rgba(0, 255, 159, 0.1)';
+        });
     }
     
-    console.log('Premium Portfolio initialized');
+    // 5. Project card effects
+    document.querySelectorAll('.project-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const glow = card.querySelector('.project-glow');
+            if (glow) {
+                glow.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(0, 255, 159, 0.2) 0%, transparent 50%)`;
+            }
+        });
+    });
+    
+    console.log('Cyberpunk Portfolio initialized with LiveKit integration');
 });

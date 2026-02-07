@@ -7,23 +7,39 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-<base target="_blank">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <base target="_blank">
 </head>
 <body>
+    <!-- Particle Background -->
+    <canvas id="particleCanvas" class="particle-canvas"></canvas>
+    
+    <!-- Scan Lines Effect -->
+    <div class="scan-lines"></div>
+    
+    <!-- Grid Background -->
+    <div class="grid-bg"></div>
+    
     <!-- Scroll Progress Bar -->
     <div class="scroll-progress" id="scrollProgress"></div>
     
     <!-- Navigation -->
-    <nav class="nav">
+    <nav class="nav" id="mainNav">
         <div class="nav-container">
-            <div class="nav-logo">ADITYA</div>
+            <div class="nav-logo">
+                <span class="logo-bracket">[</span>
+                <span class="logo-text">ADITYA</span>
+                <span class="logo-bracket">]</span>
+            </div>
             <div class="nav-links" id="navLinks">
-                <a href="#about" class="nav-link">About</a>
-                <a href="#experience" class="nav-link">Experience</a>
-                <a href="#projects" class="nav-link">Projects</a>
-                <a href="#skills" class="nav-link">Skills</a>
-                <a href="#agent" class="nav-link nav-link-special">Talk to Agent</a>
+                <a href="#about" class="nav-link" data-text="About">About</a>
+                <a href="#experience" class="nav-link" data-text="Experience">Experience</a>
+                <a href="#projects" class="nav-link" data-text="Projects">Projects</a>
+                <a href="#skills" class="nav-link" data-text="Skills">Skills</a>
+                <a href="#agent" class="nav-link nav-link-special" data-text="AI Agent">
+                    <span class="agent-pulse"></span>
+                    Talk to Agent
+                </a>
             </div>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
                 <span></span>
@@ -34,45 +50,91 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-background" id="heroBackground"></div>
+    <section class="hero" id="heroSection">
+        <div class="hero-grid-overlay"></div>
         <div class="container">
             <div class="hero-content">
-                <div class="hero-label">Full Stack Developer & AI Engineer</div>
-                <h1 class="hero-title">Aditya</h1>
-                <p class="hero-subtitle" id="heroSubtitle">
-                    I design and deploy enterprise-grade AI agents and scalable web systems, with a focus on low-latency voice intelligence and real-world production constraints.
-                </p>
-                <div class="hero-location">Belman, Karnataka, India</div>
-                <div class="hero-actions">
-                    <a href="#agent" class="btn btn-primary">
-                        <span class="btn-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                                <line x1="12" y1="19" x2="12" y2="23"></line>
-                                <line x1="8" y1="23" x2="16" y2="23"></line>
-                            </svg>
-                        </span>
-                        Talk to My Agent
-                    </a>
-                    <a href="https://github.com/MAdityaRao" target="_blank" class="btn btn-secondary">
-                        <span class="btn-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                            </svg>
-                        </span>
-                        GitHub
-                    </a>
-                    <a href="mailto:madityara5@gmail.com" class="btn btn-secondary">
-                        <span class="btn-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                <polyline points="22,6 12,13 2,6"></polyline>
-                            </svg>
-                        </span>
-                        Email
-                    </a>
+                <div class="hero-image-container">
+                    <div class="hero-image-frame">
+                        <div class="frame-corner frame-corner-tl"></div>
+                        <div class="frame-corner frame-corner-tr"></div>
+                        <div class="frame-corner frame-corner-bl"></div>
+                        <div class="frame-corner frame-corner-br"></div>
+                        <div class="scan-effect"></div>
+                        <img src="profile-photo.png" alt="Aditya" class="hero-image">
+                        <div class="hologram-overlay"></div>
+                    </div>
+                    <div class="status-indicators">
+                        <div class="status-indicator">
+                            <div class="status-dot status-active"></div>
+                            <span>ONLINE</span>
+                        </div>
+                        <div class="status-indicator">
+                            <div class="status-dot status-coding"></div>
+                            <span>BUILDING</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hero-text">
+                    <div class="hero-label">
+                        <span class="label-icon">▸</span>
+                        Full Stack Developer & AI Engineer
+                    </div>
+                    <h1 class="hero-title">
+                        <span class="title-line">ADITYA</span>
+                        <span class="title-glitch" data-text="ADITYA">ADITYA</span>
+                    </h1>
+                    <div class="terminal-wrapper">
+                        <div class="terminal-header">
+                            <span class="terminal-dot terminal-red"></span>
+                            <span class="terminal-dot terminal-yellow"></span>
+                            <span class="terminal-dot terminal-green"></span>
+                        </div>
+                        <div class="terminal-content">
+                            <span class="terminal-prompt">$</span>
+                            <span class="terminal-text" id="terminalText"></span>
+                            <span class="terminal-cursor">|</span>
+                        </div>
+                    </div>
+                    <div class="hero-location">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        Belman, Karnataka, India
+                    </div>
+                    <div class="hero-actions">
+                        <a href="#agent" class="btn btn-primary">
+                            <span class="btn-glow"></span>
+                            <span class="btn-content">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                                </svg>
+                                Talk to My Agent
+                            </span>
+                        </a>
+                        <a href="https://github.com/MAdityaRao" target="_blank" class="btn btn-secondary">
+                            <span class="btn-content">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                </svg>
+                                GitHub
+                            </span>
+                        </a>
+                        <a href="mailto:madityara5@gmail.com" class="btn btn-secondary">
+                            <span class="btn-content">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                Email
+                            </span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -83,15 +145,21 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-number">01</span>
-                <h2 class="section-title">Professional Summary</h2>
+                <h2 class="section-title">
+                    <span class="title-text">Professional Summary</span>
+                    <span class="title-line-bg"></span>
+                </h2>
             </div>
             <div class="about-content">
-                <p class="about-text">
-                    Results-oriented Full Stack Developer with hands-on production experience in Voice AI systems and cloud infrastructure.
-                </p>
-                <p class="about-text">
-                    Proven track record of delivering client projects with complex payment and shipping integrations, deploying scalable web applications, and solving hyper-local problems using advanced machine learning techniques.
-                </p>
+                <div class="data-card">
+                    <div class="card-glow"></div>
+                    <p class="about-text">
+                        Results-oriented Full Stack Developer with hands-on production experience in Voice AI systems and cloud infrastructure.
+                    </p>
+                    <p class="about-text">
+                        Proven track record of delivering client projects with complex payment and shipping integrations, deploying scalable web applications, and solving hyper-local problems using advanced machine learning techniques.
+                    </p>
+                </div>
             </div>
         </div>
     </section>
@@ -101,11 +169,22 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-number">02</span>
-                <h2 class="section-title">Technical Expertise</h2>
+                <h2 class="section-title">
+                    <span class="title-text">Technical Expertise</span>
+                    <span class="title-line-bg"></span>
+                </h2>
             </div>
             <div class="skills-grid">
                 <div class="skill-category">
-                    <h3 class="skill-category-title">Core Technologies</h3>
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="16 18 22 12 16 6"></polyline>
+                                <polyline points="8 6 2 12 8 18"></polyline>
+                            </svg>
+                        </div>
+                        <h3 class="skill-category-title">Core Technologies</h3>
+                    </div>
                     <div class="skill-tags">
                         <span class="skill-tag">Python</span>
                         <span class="skill-tag">JavaScript (ES6+)</span>
@@ -115,7 +194,16 @@
                     </div>
                 </div>
                 <div class="skill-category">
-                    <h3 class="skill-category-title">AI & Machine Learning</h3>
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                        </div>
+                        <h3 class="skill-category-title">AI & Machine Learning</h3>
+                    </div>
                     <div class="skill-tags">
                         <span class="skill-tag">LiveKit</span>
                         <span class="skill-tag">LangChain</span>
@@ -125,7 +213,14 @@
                     </div>
                 </div>
                 <div class="skill-category">
-                    <h3 class="skill-category-title">Cloud & DevOps</h3>
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="skill-category-title">Cloud & DevOps</h3>
+                    </div>
                     <div class="skill-tags">
                         <span class="skill-tag">AWS</span>
                         <span class="skill-tag">Route53</span>
@@ -134,7 +229,16 @@
                     </div>
                 </div>
                 <div class="skill-category">
-                    <h3 class="skill-category-title">Web Services</h3>
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="skill-category-title">Web Services</h3>
+                    </div>
                     <div class="skill-tags">
                         <span class="skill-tag">REST APIs</span>
                         <span class="skill-tag">Express.js</span>
@@ -151,23 +255,24 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-number">03</span>
-                <h2 class="section-title">Work Experience</h2>
+                <h2 class="section-title">
+                    <span class="title-text">Work Experience</span>
+                    <span class="title-line-bg"></span>
+                </h2>
             </div>
             <div class="timeline">
                 <div class="timeline-item">
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
-                        <div class="timeline-header">
+                        <div class="job-header">
                             <div>
-                                <h3 class="timeline-title">Torq Designs</h3>
-                                <p class="timeline-company">Part-Time Technical Solutions Partner</p>
+                                <h3 class="job-title">Torq Designs</h3>
+                                <p class="job-company">Part-Time Technical Solutions Partner</p>
                             </div>
-                            <div class="timeline-period">Nov 2024 - Present</div>
+                            <span class="job-date">Nov 2024 - Present</span>
                         </div>
-                        <div class="timeline-description">
-                            Operating in a profit-sharing model (70% split) focused on technical solutions for SMB clients.
-                        </div>
-                        <ul class="timeline-achievements">
+                        <p class="job-description">Operating in a profit-sharing model (70% split) focused on technical solutions for SMB clients.</p>
+                        <ul class="job-achievements">
                             <li>
                                 <strong>Payment & Logistics Infrastructure:</strong> Successfully integrated Razorpay payment gateways and Shiprocket logistics API for e-commerce clients, enabling automated order processing.
                             </li>
@@ -192,18 +297,19 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-number">04</span>
-                <h2 class="section-title">Featured Projects</h2>
+                <h2 class="section-title">
+                    <span class="title-text">Featured Projects</span>
+                    <span class="title-line-bg"></span>
+                </h2>
             </div>
             <div class="projects-grid">
                 <div class="project-card project-featured">
-                    <div class="project-header">
-                        <h3 class="project-title">TorqAgents</h3>
-                        <span class="project-badge">Featured</span>
-                    </div>
+                    <div class="project-glow"></div>
+                    <div class="project-badge">FEATURED</div>
+                    <div class="project-number">01</div>
+                    <h3 class="project-title">TorqAgents</h3>
                     <p class="project-subtitle">Enterprise Voice Intelligence Platform</p>
-                    <p class="project-description">
-                        Built a real-time AI Voice Agent capable of holding human-like conversations with sub-500ms latency. Designed a secure token-based backend for dynamic authentication, real-time audio streaming, and connection lifecycle management. The system is production-deployed and optimized for reliability and low latency.
-                    </p>
+                    <p class="project-description">Built a real-time AI Voice Agent capable of holding human-like conversations with sub-500ms latency. Designed a secure token-based backend for dynamic authentication, real-time audio streaming, and connection lifecycle management. The system is production-deployed and optimized for reliability and low latency.</p>
                     <div class="project-tech">
                         <span class="tech-tag">LiveKit Cloud</span>
                         <span class="tech-tag">Node.js</span>
@@ -213,14 +319,14 @@
                     </div>
                     <div class="project-meta">
                         <span class="project-role">Owner / Lead Developer</span>
-                        <span class="project-status">Production</span>
+                        <span class="project-status">• Production</span>
                     </div>
                 </div>
 
                 <div class="project-card">
-                    <div class="project-header">
-                        <h3 class="project-title">Buddle Toys</h3>
-                    </div>
+                    <div class="project-glow"></div>
+                    <div class="project-number">02</div>
+                    <h3 class="project-title">Buddle Toys</h3>
                     <p class="project-subtitle">E-Commerce Platform</p>
                     <p class="project-description">Developed the complete digital infrastructure for an eco-friendly toy brand. Configured custom domain routing and hosting on AWS, establishing a production-ready brand presence with optimized performance.</p>
                     <div class="project-tech">
@@ -229,14 +335,21 @@
                         <span class="tech-tag">Modern Web Tech</span>
                     </div>
                     <div class="project-link">
-                        <a href="https://buddletoys.com" target="_blank">buddletoys.com</a>
+                        <a href="https://buddletoys.com" target="_blank">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                            buddletoys.com
+                        </a>
                     </div>
                 </div>
 
                 <div class="project-card">
-                    <div class="project-header">
-                        <h3 class="project-title">Areca Nut Price Predictor</h3>
-                    </div>
+                    <div class="project-glow"></div>
+                    <div class="project-number">03</div>
+                    <h3 class="project-title">Areca Nut Price Predictor</h3>
                     <p class="project-subtitle">Machine Learning Application</p>
                     <p class="project-description">Created a time-series forecasting model using LSTM networks to predict Areca nut market prices, helping local farmers sell at optimal times. Solved a hyper-local agricultural problem using advanced Deep Learning techniques.</p>
                     <div class="project-tech">
@@ -248,9 +361,9 @@
                 </div>
 
                 <div class="project-card">
-                    <div class="project-header">
-                        <h3 class="project-title">F1 Telemetry Analysis</h3>
-                    </div>
+                    <div class="project-glow"></div>
+                    <div class="project-number">04</div>
+                    <h3 class="project-title">F1 Telemetry Analysis</h3>
                     <p class="project-subtitle">Data Visualization Project</p>
                     <p class="project-description">Processed complex telemetry data from Formula 1 races to visualize driver performance and race pace statistics using the FastF1 library and advanced data analysis techniques.</p>
                     <div class="project-tech">
@@ -268,111 +381,130 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-number">05</span>
-                <h2 class="section-title">Talk to My AI Agent</h2>
+                <h2 class="section-title">
+                    <span class="title-text">Talk to My AI Agent</span>
+                    <span class="title-line-bg"></span>
+                </h2>
             </div>
             
             <div class="agent-container">
-    <div class="agent-info">
-        <h3 class="agent-info-title">Interactive Voice Assistant</h3>
-        <p class="agent-info-text">
-            Experience the voice intelligence I engineered firsthand. I built this agent from scratch to demonstrate low-latency, human-like interaction capabilities. It has full context about my projects, codebases, and technical skills.
-        </p>
-        
-        <div class="agent-features">
-            <div class="agent-feature">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                </svg>
-                <span>Real-time Response</span>
-            </div>
-            <div class="agent-feature">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                </svg>
-                <span>Context Aware</span>
-            </div>
-            <div class="agent-feature">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                </svg>
-                <span>Voice Enabled</span>
-            </div>
-        </div>
+                <div class="agent-info">
+                    <h3 class="agent-info-title">
+                        <span class="title-icon">◆</span>
+                        Interactive Voice Assistant
+                    </h3>
+                    <p class="agent-info-text">
+                        Experience the voice intelligence I engineered firsthand. Built from scratch to demonstrate low-latency, human-like interaction capabilities with full context about my projects, codebases, and technical skills.
+                    </p>
+                    
+                    <div class="agent-features">
+                        <div class="agent-feature">
+                            <div class="feature-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                                </svg>
+                            </div>
+                            <span>Real-time Response</span>
+                        </div>
+                        <div class="agent-feature">
+                            <div class="feature-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                            </div>
+                            <span>Context Aware</span>
+                        </div>
+                        <div class="agent-feature">
+                            <div class="feature-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                </svg>
+                            </div>
+                            <span>Voice Enabled</span>
+                        </div>
+                    </div>
 
-        <div class="agent-transparency-box">
-            <h4 class="transparency-title">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="16" x2="12" y2="12"></line>
-                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                </svg>
-                Evaluation Logic
-            </h4>
-            <ul class="transparency-list">
-                <li>
-                    <strong>Persona:</strong> I act as the candidate (Aditya), speaking in the first person ("I have...", "My experience..."). I am polite, professional, and confident.
-                </li>
-                <li>
-                    <strong>Strategy:</strong> I evaluate the Job Description against my actual resume:
-                    <ul class="transparency-sublist">
-                        <li><strong>Match Found:</strong> I enthusiastically confirm the skill with specific examples from my projects.</li>
-                        <li><strong>Skill Gap:</strong> I pivot to related strengths and my ability to learn quickly, rather than just saying "no".</li>
-                    </ul>
-                </li>
-                <li>
-                    <strong>Style:</strong> Concise, smart, and natural spoken-style without exaggeration.
-                </li>
-            </ul>
-        </div>
-    </div>
+                    <div class="agent-transparency-box">
+                        <h4 class="transparency-title">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                            Evaluation Logic
+                        </h4>
+                        <ul class="transparency-list">
+                            <li>
+                                <strong>Persona:</strong> I act as the candidate (Aditya), speaking in the first person ("I have...", "My experience..."). I am polite, professional, and confident.
+                            </li>
+                            <li>
+                                <strong>Strategy:</strong> I evaluate the Job Description against my actual resume:
+                                <ul class="transparency-sublist">
+                                    <li><strong>Match Found:</strong> I enthusiastically confirm the skill with specific examples from my projects.</li>
+                                    <li><strong>Skill Gap:</strong> I pivot to related strengths and my ability to learn quickly, rather than just saying "no".</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>Style:</strong> Concise, smart, and natural spoken-style without exaggeration.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
-    <div class="agent-interface">
-        <div class="agent-context-wrapper" id="instructionsWrapper">
-            <div class="agent-context-input" style="display: flex; align-items: center; justify-content: center; text-align: center; background: rgba(78, 205, 196, 0.05); border-style: dashed;">
-                <p style="color: var(--color-text-secondary); font-size: 0.9rem;">
-                    Click the microphone button below to connect.<br>
-                    You will be asked to provide the Job Description after joining.
-                </p>
+                <div class="agent-interface">
+                    <div class="agent-context-wrapper" id="instructionsWrapper">
+                        <div class="agent-context-input" style="display: flex; align-items: center; justify-content: center; text-align: center; background: rgba(0, 255, 159, 0.05); border-style: dashed;">
+                            <p style="color: var(--color-text-secondary); font-size: 0.9rem;">
+                                Click the microphone button below to connect.<br>
+                                You will be asked to provide the Job Description after joining.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="agent-context-wrapper" id="jdWrapper" style="display: none;">
+                        <label for="jobDescription" class="agent-context-label">Recruiter Mode: Paste JD</label>
+                        <textarea 
+                            id="jobDescription" 
+                            class="agent-context-input" 
+                            placeholder="Paste the Job Description here..."
+                        ></textarea>
+                        <button class="btn btn-primary" id="submitJD" style="margin-top: 1rem; width: 100%; justify-content: center;">
+                            <span class="btn-glow"></span>
+                            <span class="btn-content">Submit & Start Interview</span>
+                        </button>
+                    </div>
+
+                    <div class="agent-visualizer">
+                        <canvas id="audioVisualizer"></canvas>
+                        <div class="visualizer-rings">
+                            <div class="ring ring-1"></div>
+                            <div class="ring ring-2"></div>
+                            <div class="ring ring-3"></div>
+                        </div>
+                        <div class="agent-status" id="agentStatus">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Ready to Connect</span>
+                        </div>
+                    </div>
+
+                    <div class="agent-controls">
+                        <button class="agent-mic-btn" id="agentMicBtn" aria-label="Start voice conversation">
+                            <div class="mic-pulse"></div>
+                            <svg class="mic-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                <line x1="12" y1="19" x2="12" y2="23"></line>
+                                <line x1="8" y1="23" x2="16" y2="23"></line>
+                            </svg>
+                            <svg class="stop-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                                <rect x="6" y="6" width="12" height="12" rx="2"></rect>
+                            </svg>
+                        </button>
+                        <p class="agent-hint" id="agentHint">Click the microphone to join the meeting</p>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div class="agent-context-wrapper" id="jdWrapper" style="display: none; animation: fadeInUp 0.5s ease-out;">
-            <label for="jobDescription" class="agent-context-label">Recruiter Mode: Paste JD</label>
-            <textarea 
-                id="jobDescription" 
-                class="agent-context-input" 
-                placeholder="Paste the Job Description here..."
-            ></textarea>
-            <button class="btn btn-primary" id="submitJD" style="margin-top: var(--spacing-md); width: 100%; justify-content: center;">
-                Submit & Start Interview
-            </button>
-        </div>
-
-        <div class="agent-visualizer">
-            <canvas id="audioVisualizer"></canvas>
-            <div class="agent-status" id="agentStatus">
-                <span class="status-dot"></span>
-                <span class="status-text">Ready to Connect</span>
-            </div>
-        </div>
-
-        <div class="agent-controls">
-            <button class="agent-mic-btn" id="agentMicBtn" aria-label="Start voice conversation">
-                <svg class="mic-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                    <line x1="12" y1="19" x2="12" y2="23"></line>
-                    <line x1="8" y1="23" x2="16" y2="23"></line>
-                </svg>
-                <svg class="stop-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
-                    <rect x="6" y="6" width="12" height="12" rx="2"></rect>
-                </svg>
-            </button>
-            <p class="agent-hint" id="agentHint">Click the microphone to join the meeting</p>
-        </div>
-    </div>
-</div>
         </div>
     </section>
 
@@ -381,7 +513,11 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-info">
-                    <h3 class="footer-title">Aditya</h3>
+                    <h3 class="footer-title">
+                        <span class="logo-bracket">[</span>
+                        ADITYA
+                        <span class="logo-bracket">]</span>
+                    </h3>
                     <p class="footer-subtitle">Full Stack Developer & AI Engineer</p>
                 </div>
                 <div class="footer-links">
@@ -392,7 +528,8 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>Built with passion for technology and innovation.</p>
+                <div class="footer-grid"></div>
+                <p>Built with passion for technology and innovation // 2026</p>
             </div>
         </div>
     </footer>
