@@ -37,7 +37,7 @@ class VoiceAgent {
         this.canvas = document.getElementById('audioVisualizer');
         this.ctx = this.canvas ? this.canvas.getContext('2d') : null;
         
-        // NEW: JD Elements
+        // JD Elements
         this.jdWrapper = document.getElementById('jdWrapper');
         this.instructionsWrapper = document.getElementById('instructionsWrapper');
         this.jobDescriptionInput = document.getElementById('jobDescription');
@@ -56,7 +56,7 @@ class VoiceAgent {
     }
 
     setupCanvas() {
-        const rect = this.canvas.getBoundingClientRect();
+        const rect = this.canvas.parentElement.getBoundingClientRect();
         this.canvas.width = rect.width * window.devicePixelRatio;
         this.canvas.height = rect.height * window.devicePixelRatio;
         this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
@@ -67,7 +67,6 @@ class VoiceAgent {
             this.micBtn.addEventListener('click', () => this.toggleAgent());
         }
         
-        // NEW: Bind Submit JD Button
         if (this.submitJDBtn) {
             this.submitJDBtn.addEventListener('click', () => this.submitJD());
         }
@@ -93,24 +92,25 @@ class VoiceAgent {
             this.updateStatus('Connecting...', 'connecting');
             this.micBtn.disabled = true;
 
-            // 1. Init Audio Context
+            // Init Audio Context
             if (!this.audioContext) {
                 this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 this.analyser = this.audioContext.createAnalyser();
                 this.analyser.fftSize = 256;
             }
 
-            // 2. Fetch Token
+            // Fetch Token
             const response = await fetch(LiveKitConfig.TOKEN_URL);
             if (!response.ok) throw new Error(`Token fetch failed: ${response.statusText}`);
             const data = await response.json();
 
             this.room = new LivekitClient.Room();
 
-            // 3. Handle Agent's Audio (remote tracks)
+            // Handle Agent's Audio (remote tracks)
             this.room.on('trackSubscribed', (track) => {
                 if (track.kind === 'audio') {
                     const audioElement = track.attach();
+                    audioElement.style.display = 'none';
                     document.body.appendChild(audioElement);
 
                     // Connect to analyzer for visualization
@@ -121,15 +121,15 @@ class VoiceAgent {
                 }
             });
 
-            // 4. Connect to LiveKit room
+            // Connect to LiveKit room
             await this.room.connect(LiveKitConfig.LIVEKIT_URL, data.token, {
                 autoSubscribe: true,
             });
 
-            // 5. Enable microphone and get the track for visualization
+            // Enable microphone and get the track for visualization
             await this.room.localParticipant.setMicrophoneEnabled(true);
             
-            // 6. Connect local mic to analyzer for visualization
+            // Connect local mic to analyzer for visualization
             const localAudioTrack = this.room.localParticipant.getTrackPublication(LivekitClient.Track.Source.Microphone);
             if (localAudioTrack && localAudioTrack.track) {
                 const mediaStreamTrack = localAudioTrack.track.mediaStreamTrack;
@@ -142,7 +142,7 @@ class VoiceAgent {
             
             this.startVisualizer();
 
-            // NEW: UI Logic - Show JD Input AFTER connection
+            // UI Logic - Show JD Input AFTER connection
             this.isConnected = true;
             this.showJDInput();
             this.updateStatus('Connected - Add JD to Start', 'active');
@@ -158,7 +158,6 @@ class VoiceAgent {
         }
     }
 
-    // NEW METHOD: Show JD Input
     showJDInput() {
         if (this.instructionsWrapper) this.instructionsWrapper.style.display = 'none';
         if (this.jdWrapper) {
@@ -172,7 +171,6 @@ class VoiceAgent {
         }, 300);
     }
 
-    // NEW METHOD: Submit JD
     async submitJD() {
         const jobDescription = this.jobDescriptionInput ? this.jobDescriptionInput.value.trim() : '';
         
@@ -457,12 +455,19 @@ class ParticleSystem {
         this.particles = [];
         this.particleCount = 80;
         this.connectionDistance = 120;
+        this.isActive = true;
         
         this.resize();
         this.init();
         this.animate();
         
         window.addEventListener('resize', () => this.resize());
+        
+        // Pause animation when tab is hidden
+        document.addEventListener('visibilitychange', () => {
+            this.isActive = document.visibilityState === 'visible';
+            if (this.isActive) this.animate();
+        });
     }
     
     resize() {
@@ -484,6 +489,8 @@ class ParticleSystem {
     }
     
     animate() {
+        if (!this.isActive) return;
+        
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
         this.particles.forEach(particle => {
@@ -573,19 +580,19 @@ function initTerminalTyping() {
 // INITIALIZATION
 // ===================================
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Initialize Particle System
+    // Initialize Particle System
     const particleCanvas = document.getElementById('particleCanvas');
     if (particleCanvas) {
         new ParticleSystem(particleCanvas);
     }
 
-    // 2. Initialize Voice Agent
+    // Initialize Voice Agent
     const voiceAgent = new VoiceAgent();
     
-    // 3. Terminal Typing Effect
+    // Terminal Typing Effect
     initTerminalTyping();
     
-    // 4. Interactive Effects
+    // Interactive Effects
     const heroImageFrame = document.querySelector('.hero-image-frame');
     if (heroImageFrame) {
         heroImageFrame.addEventListener('mouseenter', () => {
@@ -596,7 +603,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // 5. Project card effects
+    // Project card effects
     document.querySelectorAll('.project-card').forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
