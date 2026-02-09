@@ -261,7 +261,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 for agent setup vist
-git clone https://github.com/MAdityaRao/Resume_agent.git
+ https://github.com/MAdityaRao/Resume_agent.git
 
 **⭐ Star this repo if you found it helpful!**
 
