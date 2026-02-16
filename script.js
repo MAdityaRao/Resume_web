@@ -450,6 +450,7 @@ document.querySelectorAll('.skill-category, .timeline-item, .project-card').forE
 // ===================================
 class ParticleSystem {
     constructor(canvas) {
+        if (CONFIG.IS_MOBILE) return;
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.particles = [];

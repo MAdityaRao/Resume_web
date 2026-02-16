@@ -307,7 +307,7 @@ body {
 .hero-image-frame {
     position: relative;
     width: 100%;
-    max-width: 320px;
+    max-width: 220px;
     aspect-ratio: 4/5;
     border: 2px solid var(--color-primary);
     padding: 8px;
@@ -946,7 +946,7 @@ body {
 
 .project-badge {
     position: absolute;
-    top: 15px;
+    top: 7px;
     left: 15px;
     background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
     color: var(--color-bg);
